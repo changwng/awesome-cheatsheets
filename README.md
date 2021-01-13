@@ -129,3 +129,36 @@ You are more than welcome to contribute and build your own cheat sheet for your 
 
 git hub 모니터링
 
+### git branch --remote 
+```code
+PS C:\_vue\awesome-cheatsheets> git branch --remote       
+  master/gh-pages
+  master/master
+  origin/HEAD -> origin/master
+  origin/gh-pages
+  origin/master
+PS C:\_vue\awesome-cheatsheets> git checkout awesome_branch01
+Already on 'awesome_branch01'
+Your branch is up to date with 'master/awesome_branch01'.
+PS C:\_vue\awesome-cheatsheets> git branch
+* awesome_branch01
+  master
+  remote
+PS C:\_vue\awesome-cheatsheets> git fetch origin
+From https://github.com/changwng/awesome-cheatsheets
+ * [new branch]      awesome_branch01 -> origin/awesome_branch01
+PS C:\_vue\awesome-cheatsheets> git branch      
+* awesome_branch01
+  master
+  remote
+PS C:\_vue\awesome-cheatsheets> git branch --remote
+  master/awesome_branch01
+  master/gh-pages
+  master/master
+  master/nuxt
+  origin/HEAD -> origin/master
+  origin/awesome_branch01
+  origin/gh-pages
+  origin/master
+  origin/nuxt
+```

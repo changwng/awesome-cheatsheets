@@ -63,7 +63,7 @@ git fetch --tags                  # pulls the tags from remote
 git pull my-remote my-branch         # pulls and tries to merge my-branch from my-remote to the current branch
 
 git stash                            # stashes the staged and unstaged changes (git status will be clean after it)
-git stash -u                         # stash everything including new untracked files (but not .gitignore)
+git stash -u                         # 추적되지 않은 새로운 파일을 포함하여 모든 것을 숨 깁니다. (but not .gitignore)
 git stash save "msg"                 # stash with a msg
 git stash list                       # list all stashes
 git stash pop                        # delete the recent stash and applies it
@@ -77,6 +77,16 @@ git stash clear                      # clears all the stash
 git rebase -i <commit_id>         # Rebase commits from a commit ID
 git rebase --abort                # Abort a running rebase
 git rebase --continue             # Continue rebasing after fixing all conflicts
+
+### rebase는 merge와 동일하나 commit 히스토리를 그대로 가져간다.
+### https://git-scm.com/book/ko/v2/Git-%EB%B8%8C%EB%9E%9C%EC%B9%98-Rebase-%ED%95%98%EA%B8%B0
+### branch에서 master로 합칠때 사용하고 branch내용을 master로 옮기고 이전 마스터 내용을 fetch모드로 적용
+git checkout experiment
+git rebase master
+git checkout master
+git merge experiment
+
+git rebase --onto master server client
 
 git clean -f                      # clean untracked files permanently
 git clean -f -d/git clean -fd     # To remove directories permanently
@@ -142,3 +152,8 @@ git commit "+ 에서 / 로 변경"
 master에서 추가된 항목
 
 두번째 master1
+brach01에서 추가 항목 2:wq
+
+3
+
+커밋 브랜치 최종 버전
