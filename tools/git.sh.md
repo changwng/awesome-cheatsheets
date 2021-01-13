@@ -144,16 +144,11 @@ git stash apply '0'
 git stash drop '0'  #하면 stash list내역 지우기
 
 git statsh 상태로 돌아가고, list에서 바로 삭제
-git statsh pop
-git add tools/git.sh.md, tools/practice.js
-git commit "+ 에서 / 로 변경"  
+
+# 최종 master 상태로 로컬 파일 돌아 가기
+### https://www.codegrepper.com/code-examples/basic/git+restore+all+files
+```code
+git fetch
+git reset --hard
+git clean -df
 ```
-
-master에서 추가된 항목
-
-두번째 master1
-brach01에서 추가 항목 2:wq
-
-3
-
-커밋 브랜치 최종 버전
