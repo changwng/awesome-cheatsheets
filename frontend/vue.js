@@ -18,14 +18,14 @@ Vue.config.productionTip = false
 // Suppress all Vue logs and warnings
 Vue.config.silent = false
 
-// Make Vue ignore custom elements defined outside of Vue
+// Vue가 Vue 외부에서 정의 된 사용자 지정 요소를 무시하도록합니다.
 Vue.config.ignoredElements = [
   'my-custom-web-component',
   'another-web-component',
   /^ion-/
 ]
 
-// Define custom key alias(es) for v-on.
+// 다음에 대한 사용자 지정 키 별칭 정의 v-on.
 Vue.config.keyCodes = {
   v: 86,
   f1: 112,
@@ -43,13 +43,13 @@ Vue.config.errorHandler = function (err, vm, info) {
   // the error was found in. Only available in 2.2.0+
 }
 
-// Define custom merging strategies for options
+// 옵션에 대한 사용자 지정 병합 전략 정의
 Vue.config.optionMergeStrategies._my_option = function (parent, child, vm) {
   return child + 1
 }
 
-// Assign a custom handler for runtime Vue warnings.
-// Note this only works during development and is ignored in production.
+// 런타임 Vue 경고에 대한 사용자 지정 처리기를 할당합니다.
+// 이것은 개발 중에 만 작동하며 프로덕션에서는 무시됩니다.
 Vue.config.warnHandler = function (msg, vm, trace) {
   // `trace` is the component hierarchy trace
 }
@@ -607,6 +607,7 @@ vm.$emit(event, […args])
  * https://vuejs.org/v2/api/#Instance-Methods-Lifecycle
  * ******************************************************************************************* */
 
+ 
 
 // If a Vue instance didn’t receive the el option at instantiation, it will be in “unmounted”
 // state, without an associated DOM element. vm.$mount() can be used to manually start the mounting
@@ -797,3 +798,6 @@ vm.$destroy()
 
 // <!-- Used for dynamic components and to work around limitations of in-DOM templates. -->
 // <component :is="currentView"></component>
+ 
+
+

@@ -175,25 +175,25 @@ class Component extends React.Component {
   }
 }
 
-// Can be defined as a property on the component class itself, to set the default props for the class.
-// This is used for undefined props, but not for null props.
+// 클래스에 대한 기본 소품을 설정하기 위해 구성 요소 클래스 자체의 속성으로 정의 할 수 있습니다.
+// 정의되지 않은 소품에는 사용되지만 null 소품에는 사용되지 않습니다.
 Component.defaultProps = {
   color: 'blue'
 };
 
 component = new Component();
 
-// By default, when your component’s state or props change, your component will re-render.
-// If your render() method depends on some other data, you can tell React that the component needs re-rendering by calling forceUpdate().
-// Normally you should try to avoid all uses of forceUpdate() and only read from this.props and this.state in render().
+// 기본적으로 구성 요소의 상태 또는 소품이 변경되면 구성 요소가 다시 렌더링됩니다..
+// If your render() 메소드는 다른 데이터에 의존하므로 React를 호출하여 컴포넌트를 다시 렌더링해야한다고 알릴 수 있습니다.forceUpdate().
+// 일반적으로 모든 사용을 피해야합니다. of forceUpdate() and only read from this.props and this.state in render().
 component.forceUpdate(callback)
 
 
 /* *******************************************************************************************
  * REACT.DOM
- * The react-dom package provides DOM-specific methods that can be used at the top level of
- * your app and as an escape hatch to get outside of the React model if you need to.
- * Most of your components should not need to use this module.
+ *react-dom 패키지는 최상위 수준에서 사용할 수있는 DOM 특정 메소드를 제공합니다.
+ * 앱과 필요한 경우 React 모델 외부로 나가기위한 탈출구로 사용할 수 있습니다.
+ * 대부분의 구성 요소는이 모듈을 사용할 필요가 없습니다.
  * https://reactjs.org/docs/react-dom.html
  * ******************************************************************************************* */
 
