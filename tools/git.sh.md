@@ -138,3 +138,5 @@ git statsh pop
 git add tools/git.sh.md, tools/practice.js
 git commit "+ 에서 / 로 변경"  
 ```
+
+master에서 추가된 항목
