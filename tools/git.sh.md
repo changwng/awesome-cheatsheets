@@ -1,3 +1,4 @@
+```shell
 git init            # initiates git in the current directory
 git clone <address> # creates a git repo from given address (get the address from your git-server)
 git clone <address> -b <branch_name> <path/to/directory>  # clones a git repo from the address into the given directory and checkout's the given branch
@@ -94,7 +95,7 @@ git config --global alias.<handle> <command> # add git aliases to speed up workf
 # .gitignore is also get ignored 
 .git
 # is a hidden directory in repo directory including git files. It is created after "git init".
-
+```
 git diff HEAD origin/master
 git log --decorate --all --oneline
 git merge origin/master (*) 신중 해야함
