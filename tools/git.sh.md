@@ -150,3 +150,5 @@ git commit "+ 에서 / 로 변경"
 ```
 
 master에서 추가된 항목
+
+brach01에서 추가 항목 2:wq
