@@ -104,3 +104,7 @@ git merge origin/master (*) 신중 해야함
 원래 내용과 바뀐 내용과의 차이를 알 수 있다 (git diff HEAD origin/master)
 commit이 얼마나 됐는지 알 수 있다 (git log --decorate --all --oneline)
 이런 세부 내용 확인 후 git merge origin/master 하면 git pull 상태와 같아진다. (병합까지 완료)
+
+* 로컬 git에 대해서 
+git remote -v
+git remote set-url origin https://github.com/changwng/awesome-cheatsheets
