@@ -112,3 +112,13 @@ commit이 얼마나 됐는지 알 수 있다 (git log --decorate --all --oneline
 git remote -v
 git remote set-url origin https://github.com/changwng/awesome-cheatsheets
 ```
+
+* git stash를 사용한 로컬 임시 저장후 다른 branch 작업
+ 1. 작업중인 상황을 그대로 커밋한다.
+ 2. 새로운 브랜치를 따서 commit한후 , 다시 현재 브랜치로 돌아 온다
+ 3. git stash 명령어를 이용한다.
+     => git stash 명령어를 이용하면, branch를 새로 따거나, 불필요한 commit을 막을 수 있다
+     git stash 현재 상태를 임시로 저장한다.
+```shell
+git add tools/git.sh , tools/git.sh.md, tools/practice.js
+```

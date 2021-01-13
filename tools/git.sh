@@ -108,3 +108,5 @@ commit이 얼마나 됐는지 알 수 있다 (git log --decorate --all --oneline
 * 로컬 git에 대해서 
 git remote -v
 git remote set-url origin https://github.com/changwng/awesome-cheatsheets
+
+
