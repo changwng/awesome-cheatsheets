@@ -121,4 +121,20 @@ git remote set-url origin https://github.com/changwng/awesome-cheatsheets
      git stash 현재 상태를 임시로 저장한다.
 ```shell
 git add tools/git.sh , tools/git.sh.md, tools/practice.js
+git commit -m "add function"
+# practice.js 파일을 + 에서 /로 변경 한다.
+git status 
+# 파일 두개가 modified상태가 됨
+# 이상태를 저장하고 최근 상태로 돌아가려면 git stash
+git stash
+
+git stash list #하면 0으로 표시된 부분이 있는데 수정하는곳으로 돌아가려면
+
+git stash apply '0'
+git stash drop '0'  #하면 stash list내역 지우기
+
+git statsh 상태로 돌아가고, list에서 바로 삭제
+git statsh pop
+git add tools/git.sh.md, tools/practice.js
+git commit "+ 에서 / 로 변경"  
 ```
