@@ -157,3 +157,11 @@ brach01에서 추가 항목 2:wq
 3
 
 커밋 브랜치 최종 버전
+# 최종 master 상태로 로컬 파일 돌아 가기
+### https://www.codegrepper.com/code-examples/basic/git+restore+all+files
+```code
+git fetch
+git reset --hard
+git clean -df
+```
+ 
