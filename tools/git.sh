@@ -30,6 +30,14 @@ git remote -v                      # shows the remote for pull and push
 git remote add my-remote <address> # creates a remote (get the address from your git-server)
 git remote rm my-remote            # Remove a remote
 
+git init
+
+ 
+git remote -v
+git remote add origin https://github.com/ehbwoong/gitinit
+git remote set-url origin https://github.com/changwng/gitinit
+
+
 git log                      # shows the log of commits
 git log --oneline            # shows the log of commits, each commit in a single line
 git log -p <file_name>       # change over time for a specific file
