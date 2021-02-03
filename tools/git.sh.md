@@ -164,4 +164,7 @@ git fetch
 git reset --hard
 git clean -df
 ```
- 
+# git hub에서 최종본 가져온다음 특정 테그 수정 처리 
+git clone https://github.com/mockito/mockito
+git checkout tags/v3.7.9
+git switch -c v3.7.9
