@@ -152,3 +152,15 @@ git fetch
 git reset --hard
 git clean -df
 ```
+
+https://helloinyong.tistory.com/202
+
+git add practice2.js
+git commit -m "더하기 함수"
+git status  // 현재의 상태를 임시로 저장한다.  
+git stash
+이 상황에서 현재 상태를 저장하고 최근 commit 상태로 돌아가려면 'git stash' 명령어를 사용한다
+git stash list
+git stash apply stash@{0}  // 저장 전 상태로 되돌리기
+git stash drop stash@{0}    // 내역 지우기
+git stash pop // 만약 apply 후에 drop하는 기능을 한 번에 하려면
