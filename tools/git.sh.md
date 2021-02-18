@@ -144,18 +144,18 @@ git stash apply '0'
 git stash drop '0'  #하면 stash list내역 지우기
 
 git statsh 상태로 돌아가고, list에서 바로 삭제
-git statsh pop
-git add tools/git.sh.md, tools/practice.js
-git commit "+ 에서 / 로 변경"  
+
+# 최종 master 상태로 로컬 파일 돌아 가기
+### https://www.codegrepper.com/code-examples/basic/git+restore+all+files
+```code
+git fetch
+git reset --hard
+git clean -df
 ```
 
-master에서 추가된 항목
+https://helloinyong.tistory.com/202
 
-두번째 master1
-brach01에서 추가 항목 2:wq
-
-3
-
+ 
 커밋 브랜치 최종 버전
 # 최종 master 상태로 로컬 파일 돌아 가기
 ### https://www.codegrepper.com/code-examples/basic/git+restore+all+files
@@ -168,3 +168,14 @@ git clean -df
 git clone https://github.com/mockito/mockito
 git checkout tags/v3.7.9
 git switch -c v3.7.9
+ 
+git add practice2.js
+git commit -m "더하기 함수"
+git status  // 현재의 상태를 임시로 저장한다.  
+git stash
+이 상황에서 현재 상태를 저장하고 최근 commit 상태로 돌아가려면 'git stash' 명령어를 사용한다
+git stash list
+git stash apply stash@{0}  // 저장 전 상태로 되돌리기
+git stash drop stash@{0}    // 내역 지우기
+git stash pop // 만약 apply 후에 drop하는 기능을 한 번에 하려면
+>>>>>>> awesome_branch01
