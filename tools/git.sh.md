@@ -178,4 +178,4 @@ git stash list
 git stash apply stash@{0}  // 저장 전 상태로 되돌리기
 git stash drop stash@{0}    // 내역 지우기
 git stash pop // 만약 apply 후에 drop하는 기능을 한 번에 하려면
->>>>>>> awesome_branch01
+ 
