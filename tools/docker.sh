@@ -25,7 +25,7 @@ docker system prune                         # Remove all unused containers, netw
 docker system prune -a                      # Remove all unused containers, networks, images not just dangling ones (Docker 17.06.1-ce and superior)
 docker volume prune                         # Remove all unused local volumes
 docker network prune                        # Remove all unused networks
-
+kubectl get nodes
 # --- book execesize 8080(외부)을 :80(컨테이너내부)으로 포트 연결
 #Base Development Extensions Pack
 #  --모든 파일이 한곳에 들어 있음 /work/_Book_k8sInfra
@@ -72,7 +72,46 @@ EXPOSE 60431
 COPY ./target/app-in-host.jar /opt/app-in-image.jar
 WORKDIR /opt
 ENTRYPOINT [ "java", "-jar", "app-in-image.jar" ]
+
+yum -y install java-1.8.0-openjdk-devel
+./mvnw clean package
+docker build -t optimal-img .
+
+FROM gcr.io/distroless/java:8
+
+docker run -d -p 60432:80 --name optimal-run --restart always optimal-img
+# docker 파일 안에서 빌드 하기
+
+#Docker file안에서 mvn빌드한후에 이동 하여 java 실행 하는 파일
+docker build -t nohost-img .
+docker images | head -n 4
+docker run -d -p 60433:80 --name nohost-run --restart always nohost-img
 */
+
+## kube에서 설치 하기
+
+docker images hello-world
+kubectl create deployment failure1 --image=hello-world
+kubectl get pods -o wide
+# 랭글링 이미지 삭제
+
+## rror: failed to create deployment: Post "https://10.0.2.15:8443/apis/apps/v1/namespaces/default/deployments?fieldManager=kubectl-create": dial tcp 10.0.2.15:8443: connect: connection refused
+
+#https://minikube.sigs.k8s.io/docs/start/
+# kube 대신 적용 테스트
+minikube kubectl -- get po -A
+minikube dashboard
+
+kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.4
+kubectl expose deployment hello-minikube --type=NodePort --port=8080
+kubectl get services hello-minikube
+minikube service hello-minikube
+kubectl port-forward service/hello-minikube 7080:8080
+
+putty.exe -ssh -p 60010 root@localhost  -pw vagrant
+putty.exe root@localhost:60010 -pw vagrant
+@start putty -load "mySavedSession" -l root -pw vagrant
+
 ##############################################################################
 # DOCKER COMPOSE
 ##############################################################################
@@ -134,3 +173,25 @@ docker-machine stop $(docker-machine ls -q)                               # Stop
 docker-machine rm $(docker-machine ls -q)                                 # Delete all VMs and their disk images
 docker-machine scp docker-compose.yml myvm1:~                             # Copy file to node's home dir
 docker-machine ssh myvm1 "docker stack deploy -c <file> <app>"            # Deploy an app
+
+##############################################################################
+# KUBENATE COMMAND
+##############################################################################
+kubectl get nodes
+kubectl get pods --all-namespaces
+kubectl get pods --all-namespaces | grep kube-proxy
+# 마스터 노드가 아닌 다른곳에서 가져오기
+scp root@192.168.1.10:/etc/kubernetes/admin.conf .
+kubectl get nodes --kubeconfig admin.conf
+#pod 생성
+kubectl create -f ~/_Book_k8sInfra/ch3/3.1.6/nginx-pod.yaml
+kubectl delete pod nginx-pod
+kubectl get pods
+kubectl get pods -o wide
+systemctl stop kubelet
+systemctl start kubelet
+
+kubectl create deployment dpy-nginx --image=nginx
+kubectl scale deployment dpy-nginx --replicas=3 #이거는 pod라 스케일 변경 안됌
+#kubectl scale pod nginx-pod --replicas=3 #이거는 pod라 스케일 변경 안됌
+
