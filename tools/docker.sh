@@ -5,9 +5,9 @@
 
 docker build -t friendlyname .              # Create image using this directory's Dockerfile
 docker run -p 4000:80 friendlyname          # Run "friendlyname" mapping port 4000 to 80
-docker run -d -p 4000:80 friendlyname       # Same thing, but in detached mode
+docker run -d -p 4000:80 friendlyname       # Same thing, but in detached mode  (Background mode)
 docker exec -it [container-id] bash         # Enter a running container
-docker ps                                   # See a list of all running containers
+docker ps                                   # See a list of all running containers ( Process Status)
 docker stop <hash>                          # Gracefully stop the specified container
 docker ps -a                                # See a list of all containers, even the ones not running
 docker kill <hash>                          # Force shutdown of the specified container
@@ -26,7 +26,53 @@ docker system prune -a                      # Remove all unused containers, netw
 docker volume prune                         # Remove all unused local volumes
 docker network prune                        # Remove all unused networks
 
+# --- book execesize 8080(외부)을 :80(컨테이너내부)으로 포트 연결
+#Base Development Extensions Pack
+#  --모든 파일이 한곳에 들어 있음 /work/_Book_k8sInfra
+#git clone https://github.com/sysnet4admin/_Book_k8sInfra
+#git clone https://github.com/sysnet4admin/_Lecture_k8s_starter.kit
+#git clone https://github.com/sysnet4admin/_Lecture_Ansible.expert
 
+docker run -d -p 8080:80 --name nginx-exposed --restart always nginx
+docker ps -f name=nginx-exposed  # filtering name
+# 디렉토리 연결 /work/_Book_k8sInfra
+docker run -d -p 8081:80 -v /work/html:/usr/share/nginx/html --name nginx-bind-mount --restart always nginx
+cp /work/_Book_k8sInfra/ch4/4.2.3/index-BindMount.html /work/html/index.html
+#docker volumns
+docker volume create nginx-volume
+docker volume inspect nginx-volume   # /var/lib/docker/volumes/nginx-volume/_data
+docker run -d -p 8082:80 -v nginx-volume:/usr/share/nginx/html --name nginx-volume --restart always nginx
+# ls /var/lib/docker/volumes/nginx-volume/_data
+# vi /var/lib/docker/volumes/nginx-volume/_data/index.html
+# sudo cp /work/_Book_k8sInfra/ch4/4.2.3/index-BindMount.html /var/lib/docker/volumes/nginx-volume/_data/index.html
+
+docker ps -f ancestor=nginx
+docker stop lb4
+docker stop nginx-bind-mount
+docker stop $(docker ps -q -f ancestor=nginx) # -q is quiet 
+docker ps -a -f ancestor=nginx
+docker rm $(docker ps -aq -f ancestor=nginx)  # all container remove
+
+#java docker image build
+>$ ./mvnw clean package
+>$ ls target #app-in-host /work/_Book_k8sInfra/ch4/4.3.1/target/app-in-host.jar
+docker build -t basic-img . #  -t is tag 이미지
+# Successfully built 0f6952a799ab
+# Successfully tagged basic-img:latest
+docker images basic-img
+docker build -t basic-img:1.0 -t basic-img:2.0 . # tag 2개
+
+docker run -d -p 60431:80 --name basic-run --restart always basic-img
+docker ps -f name=basic-run
+sed -i `s/Application/Development/` Dockerfile
+/* Dockerfile
+FROM openjdk:8
+LABEL description="Echo IP Java Application"
+EXPOSE 60431
+COPY ./target/app-in-host.jar /opt/app-in-image.jar
+WORKDIR /opt
+ENTRYPOINT [ "java", "-jar", "app-in-image.jar" ]
+*/
 ##############################################################################
 # DOCKER COMPOSE
 ##############################################################################
