@@ -183,6 +183,8 @@ kubectl get pods --all-namespaces | grep kube-proxy
 # 마스터 노드가 아닌 다른곳에서 가져오기
 scp root@192.168.1.10:/etc/kubernetes/admin.conf .
 kubectl get nodes --kubeconfig admin.conf
+kubectl get pods -o wide --kubeconfig admin.conf
+
 #pod 생성
 kubectl create -f ~/_Book_k8sInfra/ch3/3.1.6/nginx-pod.yaml
 kubectl delete pod nginx-pod
@@ -195,3 +197,109 @@ kubectl create deployment dpy-nginx --image=nginx
 kubectl scale deployment dpy-nginx --replicas=3 #이거는 pod라 스케일 변경 안됌
 #kubectl scale pod nginx-pod --replicas=3 #이거는 pod라 스케일 변경 안됌
 
+##############################################################################
+# Helm COMMAND
+##############################################################################
+cd ~/_Book_k8sInfra/ch5/5.2.3
+export DESIRED_VERSION=v3.2.1;./helm-install.sh
+http://artifacthub.io 에서 metallb 검색
+
+$ helm repo add edu https://iac-source.github.io/helm-charts
+$ helm repo update
+ helm repo list
+ $ helm install metallb edu/metallb \
+--namespace=metallb-system \
+--create-namespace \
+--set controller.tag=v0.8.3 \
+--set speaker.tag=v0.8.3 \
+--set configmap.ipRange=192.168.1.11-192.168.1.29
+#''''''' out put
+NAME: metallb
+LAST DEPLOYED: Tue Jul 27 19:35:47 2021
+NAMESPACE: metallb-system
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+MetalLB load-balancer is successfully installed.
+1. IP Address range 192.168.1.11-192.168.1.29 is available.
+2. You can create a LoadBalancer service with following command below.
+kubectl expose deployment [deployment-name] --type=LoadBalancer --name=[LoadBalancer-name] --port=[external port]
+#'''''
+
+https://github.com/IaC-Source/helm-charts 에서 values.yaml 확인
+
+##변수값 확인
+helm show values metallb-system
+
+# 쿠버네이트 확인
+kubectl get pods -n metallb-system -o wide
+kubectl get configmap -n metallb-system
+kubectl describe pods -n metallb-system | grep Image:
+
+#위에 설정된것을 테스트 하기 위한것
+
+kubectl create deployment echo-ip --image=sysnet4admin/echo-ip
+kubectl expose deployment echo-ip --type=LoadBalancer --port=80
+kubectl get service echo-ip
+#''' output
+
+NAME      TYPE           CLUSTER-IP    EXTERNAL-IP    PORT(S)        AGE
+echo-ip   LoadBalancer   10.105.0.15   192.168.1.11   80:30254/TCP   6s
+#'''
+
+kubectl delete service echo-ip
+kubectl delete deployment  echo-ip
+
+# docker registry 설치
+~/_Book_k8sInfra/ch4/4.4.2/create-registry.sh
+docker ps -f name=registry
+curl "http://0.0.0.0:8443"
+
+cd ~/_Book_k8sInfra/ch4/4.3.4
+docker build -t mutistage-img .
+docker images | head -n 3
+#yaml 파일 만드는 방식
+
+
+kubectl create deployment failure2 --image=mutistage-img 
+kubectl get pods -w
+
+docker tag mutistage-img 192.168.1.10:8443/mutistage-img
+docker images 192.168.1.10:8443/mutistage-img
+docker push 192.168.1.10:8443/mutistage-img
+curl 'http://192.168.1.10:8443/v1/repositories/mutistage-img/tags/latest'
+
+docker run 192.168.1.10:8443/mutistage-img
+
+
+
+kubectl create deployment failure2 --dry-run=client -o yaml --image=mutistage-img > failure2.yaml
+cp failure2.yaml success2.yaml
+sed -i 's/replicas: 1/replicas: 3/' success2.yaml
+sed -i 's/failure2/success2/' success2.yaml
+vi success2.yaml
+-----
+- image:192.168.1.10:8443/mutistage-img
+kubectl apply -f success2.yaml  # create
+kubectl delete -f success2.yaml # delete
+
+#3장 도커 빌드후에 도커 레지스트리로 올리기
+
+~/_Book_k8sInfra/ch5/5.3.1/nfs-exporter.sh jenkins
+ls -n /nfs_shared
+chown 1000:1000 /nfs_shared/jenkins/  # jenkins nfs owner ,group id 
+ls -n /nfs_shared
+
+kubectl exec -it jenkins~ -- cat /etc/passwd
+# https://github.com/ramitsurana/awesome-kubernetes
+## https://betterprogramming.pub/awesome-kubernetes-command-line-hacks-8bd3604e394f
+alias k=kubectl
+alias kdr='kubectl --dry-run=client -o yaml'
+alias kap='kubectl apply'
+alias kd='kubectl delete'
+alias kbb='kubectl run busybox-test --image=busybox -it --rm --restart=Never --'
+alias kdb='kubectl describe'
+alias kl='kubectl logs'
+alias ke='kubectl exec -it'
+alias kgp='kubectl get pod -o wide'
