@@ -177,6 +177,13 @@ docker-machine ssh myvm1 "docker stack deploy -c <file> <app>"            # Depl
 ##############################################################################
 # KUBENATE COMMAND
 ##############################################################################
+# 실제 처리
+\_Book_k8sInfra\ch3\3.1.3 은 1.13.1로 되어 있다.
+vagrant destroy -f 이면 전체 파일이 삭제 시킨다.
+Page 256
+C:\HashiCorp\Boxs\kube\_Book_k8sInfra\ch4\4.3.4\k8s-SingleMaster-18.9_9_w_auto-compl\Vagrantfile로 설치 하여
+ vagrant up으로 설치 하여  docker 18.9.9를 설치한다.
+
 kubectl get nodes
 kubectl get pods --all-namespaces
 kubectl get pods --all-namespaces | grep kube-proxy
@@ -269,6 +276,10 @@ docker tag mutistage-img 192.168.1.10:8443/mutistage-img
 docker images 192.168.1.10:8443/mutistage-img
 docker push 192.168.1.10:8443/mutistage-img
 curl 'http://192.168.1.10:8443/v1/repositories/mutistage-img/tags/latest'
+
+   curl 'http://192.168.1.10:8443/v1/repositories/gateway/tags/latest'
+curl http://192.168.1.10:8443/v2/_catalog
+ 
 
 docker run 192.168.1.10:8443/mutistage-img
 
@@ -521,3 +532,100 @@ label_vaules(kube_pod_info,namespace)
 docker run -d nginx
 docker export 컨테이너 > nginx.tar
 tar -C nginx-container -xvf nginx.tar
+
+
+CrashLoopBackOff
+kubectl delete pod `kubectl get pods | awk '$3 == "CrashLoopBackOff" {print $1}'`
+kubectl apply -f gateway-mariadb.yml
+kubectl apply -f gateway-k8s
+
+
+
+
+
+
+//------------- minukube start
+https://minikube.sigs.k8s.io/docs/start/
+https://minikube.sigs.k8s.io/docs/tutorials/multi_node/
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+----삭제처리
+minikube status
+minikube stop
+minikube delete --all
+
+
+
+
+minikube --cpus 6 start
+
+cd /home/vagrant/workgoh/jhipster-microservices-example/kubernetes
+./kubectl-apply.sh -k
+
+The deployment process can take several minutes to complete. Run minikube dashboard to see the deployed containers. 
+You can also run  to see the status of each pod.
+kubectl get po -o wide --watch
+minikube service blog 
+
+
+
+
+minikube kubectl -- get po -A
+
+Deploy applications
+kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.4
+kubectl expose deployment hello-minikube --type=NodePort --port=8080
+
+
+kubectl get services hello-minikube
+minikube service hello-minikube
+
+kubectl port-forward service/hello-minikube 7080:8080
+
+
+--- loadBalance Deployments
+kubectl create deployment balanced --image=k8s.gcr.io/echoserver:1.4  
+kubectl expose deployment balanced --type=LoadBalancer --port=8080
+minikube tunnel
+--// other windows
+kubectl get services balanced
+
+
+Manage your cluster
+minikube pause
+minikube stop
+
+minikube config set memory 20000
+minikube config set cpus 4
+minikube config view
+minikube addons list
+
+Delete all of the minikube clusters:
+
+minikube delete --all
+
+----------minikube mulinode start
+minikube start --nodes 2 -p multinode-demo
+kubectl get nodes
+minikube status -p multinode-demo
+kubectl get pod,svc -n kube-system
+------------------ kubernate 생성 테스트
+git clone https://github.com/oktadev/jhipster-microservices-example
+
+cd blog, store
+./mvnw package -Pprod docker:build
+
+cd ./kubernetes 
+jhipster kubernetes
+
+
+kubectl apply -f registry
+kubectl apply -f blog
+kubectl apply -f store
+
+minikube dashboard
+
+kubectl get po -o wide --watch
+minikube service blog
+kubectl delete deployment --all
