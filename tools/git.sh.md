@@ -165,6 +165,7 @@ git reset --hard
 git clean -df
 ```
 # git hub에서 최종본 가져온다음 특정 테그 수정 처리 
+``` shell
 git clone https://github.com/mockito/mockito
 git checkout tags/v3.7.9
 git switch -c v3.7.9
@@ -172,15 +173,23 @@ git switch -c v3.7.9
 git add practice2.js
 git commit -m "더하기 함수"
 git status  // 현재의 상태를 임시로 저장한다.  
+```
+# git 임시 저장후 다시 가져와서 작업 하기 
+``` shell
 git stash
 이 상황에서 현재 상태를 저장하고 최근 commit 상태로 돌아가려면 'git stash' 명령어를 사용한다
 git stash list
 git stash apply stash@{0}  // 저장 전 상태로 되돌리기
+git stash apply --index
+위의 명령어로는 Staged 상태였던 파일을 자동으로 다시 Staged 상태로 만들어 주지 않는다. –index 옵션을 주어야 Staged 상태까지 복원한다. 이를 통해 원래 작업하던 파일의 상태로 돌아올 수 있다.
+ 
 git stash drop stash@{0}    // 내역 지우기
 git stash pop // 만약 apply 후에 drop하는 기능을 한 번에 하려면
- 
+```
 https://gmlwjd9405.github.io/2018/05/11/types-of-git-branch.html
 // feature 브랜치(feature/login)를 'develop' 브랜치('master' 브랜치에서 따는 것이 아니다!)에서 분기
+#  브랜치 분기하여 작업 하기 
+``` shell
 $ git checkout -b feature/dev_woongjang devel
 /* ~ 새로운 기능에 대한 작업 수행 ~ */
 /* feature 브랜치에서 모든 작업이 끝나면 */
@@ -194,6 +203,14 @@ $ git push origin devel
 // -d 옵션: feature/login에 해당하는 브랜치를 삭제한다.
 $## git branch -d feature/dev_woongjang
 // 'develop' 브랜치를 원격 중앙 저장소에 올린다.
-$ 
+$ git merge --no-ff devel
+```
 
-git merge --no-ff devel
+#  git pull 충돌시 해결 방법 정리
+```
+1. git stash
+
+2. git pull
+
+3 git stash pop
+```
