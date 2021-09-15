@@ -204,6 +204,10 @@ $ git push origin devel
 $## git branch -d feature/dev_woongjang
 // 'develop' 브랜치를 원격 중앙 저장소에 올린다.
 $ git merge --no-ff devel
+
+
+git merge --no-ff awesome_branch01
+git push origin master
 ```
 
 #  git pull 충돌시 해결 방법 정리
@@ -214,3 +218,4 @@ $ git merge --no-ff devel
 
 3 git stash pop
 ```
+
