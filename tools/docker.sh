@@ -33,6 +33,38 @@ kubectl get nodes
 #git clone https://github.com/sysnet4admin/_Lecture_k8s_starter.kit
 #git clone https://github.com/sysnet4admin/_Lecture_Ansible.expert
 
+도메인 주도 개발
+https://github.com/CNAPS-MSA
+
+본체 : cpu 24개인 컴퓨터임
+마스터 노드 사양: cpus 6, memory 8192
+워커노드 사양 cpus 3, memory 4096 일경우 세팅되
+
+git clone https://github.com/CNAPS-MSA/bookCatalog
+git clone https://github.com/CNAPS-MSA/book
+git clone https://github.com/CNAPS-MSA/rental
+git clone https://github.com/CNAPS-MSA/gateway
+git clone https://github.com/CNAPS-MSA/CNAPS3
+git clone https://github.com/CNAPS-MSA/board
+git clone https://github.com/CNAPS-MSA/k8s
+
+docker login 후에 다음과 같이 세팅
+cd gateway
+ ./mvnw package -Pprod -DskipTests jib:dockerBuild -Dimage=changwng/gateway:latest
+ docker push changwng/gateway:latest
+ cd book
+ ./mvnw package -Pprod -DskipTests jib:dockerBuild -Dimage=changwng/book:latest
+docker push changwng/book:latest
+cd bookCatalog
+ ./mvnw package -Pprod -DskipTests jib:dockerBuild -Dimage=changwng/bookcatalog:latest
+ docker images changwng/bookcatalog:latest
+ docker push changwng/bookcatalog:latest
+cd rental
+ ./mvnw package -Pprod -DskipTests jib:dockerBuild -Dimage=changwng/rental:latest
+docker images changwng/rental:latest
+ docker push changwng/rental:latest  #=> docker.io/changwng/rental로 올라감
+
+
 docker run -d -p 8080:80 --name nginx-exposed --restart always nginx
 docker ps -f name=nginx-exposed  # filtering name
 # 디렉토리 연결 /work/_Book_k8sInfra
@@ -604,7 +636,11 @@ minikube addons list
 Delete all of the minikube clusters:
 
 minikube delete --all
-
+minikube start
+minikube tunnel
+kubectl get svc
+#~//수동 배포시 처리된는것
+kubectl expose deployment hello-minikube1 --type=LoadBalancer --port=8080
 ----------minikube mulinode start
 minikube start --nodes 2 -p multinode-demo
 kubectl get nodes
@@ -629,3 +665,98 @@ minikube dashboard
 kubectl get po -o wide --watch
 minikube service blog
 kubectl delete deployment --all
+
+
+minikube service gateway
+
+
+
+
+
+cd gateway
+docker-compose -f src/main/docker/jhipster-registry.yml up -d
+docker-compose -f src/main/docker/kafka.yml up -d
+docker-compose -f src/main/docker/monitoring.yml up -d
+docker-compose -f src/main/docker/sonar.yml up -d
+docker-compose -f src/main/docker/mariadb.yml up -d
+docker-compose -f src/main/docker/app.yml up -d
+
+cd bookCatalog
+docker-compose -f src/main/docker/mongodb.yml up -d
+cd gateway
+./mvnw -Pprod
+
+cd gateway
+./mvnw -Pprod verify jib:dockerBuild
+docker-compose -f gateway/src/main/docker/app.yml up -d
+
+cd book
+./mvnw -Pprod verify jib:dockerBuild -Dmaven.test.skip=true
+docker-compose -f src/main/docker/app.yml up -d
+
+cd root
+
+jhipster ci-cd 한후에 
+ src/main/docker에 docker-registry.yml과 jenkins yml이 있는데.. 이것으로 설정한다.
+
+docker-compose -f src/main/docker/docker-registry.yml up -d #port:5080
+docker-compose -f src/main/docker/jenkins.yml up -d #port:49001, 50000
+
+### vbox에서 port forwarding 세팅후에 윈도우즈에서 개발 한다. ###
+
+3306
+3000
+9090
+9092
+2181
+8761
+8080
+9001
+9093
+5000
+5080
+27017
+49001
+50000
+
+http://localhost:3000/?orgId=1
+http://localhost:9090/graph
+
+localhost:9092
+zookeeper:2181
+
+http://localhost:8761
+
+sona :   - 9001:9000
+      - 9093:9092
+http://localhost:9090/graph
+http://localhost:3000/?orgId=1
+http://localhost:49001/
+http://localhost:5000 docker registry 
+http://localhost:5080/repositories/20  # docker registry UI
+--jenkins
+http://localhost:49001/
+http://localhost:50000/
+
+--mongodb
+27017
+
+
+
+------------ localhost에서
+mongodb,kafka를 127.0.0.1 로설정
+sudo vi /etc/hosts
+127.0.0.1 mongodb
+127.0.0.1 kafka
+127.0.0.1 board-mysql
+127.0.0.1 book-mariadb
+127.0.0.1 gateway-mariadb
+127.0.0.1 rental-mariadb
+127.0.0.1 jhipster-registry
+
+######################
+
+-- docker registry 설치후에 저장 로직
+./mvnw package -Pprod -DskipTests jib:build -Dimage=localhost:5000/book:latest -Djib.allowInsecureRegistries=true
+./mvnw package -Pprod -DskipTests jib:build -Dimage=192.168.40.193:5000/bookcatalog:latest -Djib.allowInsecureRegistries=true
+mvnw package -Pprod -DskipTests jib:build -Dimage=192.168.40.193:5000/bookcatalog:latest -Djib.allowInsecureRegistries=true
