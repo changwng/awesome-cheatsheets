@@ -124,9 +124,22 @@ $ git merge --no-ff feature/dev_woongjang
 $ git push origin devel
 // -d 옵션: feature/login에 해당하는 브랜치를 삭제한다.
 $## git branch -d feature/dev_woongjang
+//-- 삭제 처리
+git reset -merge
+git reset HEAD^ 이전
+git reset --hard
+
+git clean -n
+git clean -f
+git clean -d -f -f
 
 git merge --no-ff devel
- 
+
+
+
+git merge --no-ff devel
+ -- mthink에서 ----------------------------------
+ git checkout -b feature/dev_woongjang master
 --------- git stash 명령------
 git stash
 git stash save 

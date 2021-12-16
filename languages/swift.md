@@ -1,4 +1,9 @@
-### Styel Guide
+### Swift Mvvm 가이드
+git clone https://github.com/kickstarter/ios-oss
+
+https://junhyi-park.medium.com/mvvm-%ED%95%99%EC%8A%B5-%EC%A0%95%EB%A6%AC-bb7576e23c65
+
+### Styel Guide 
 https://www.raywenderlich.com/14223279-dependency-injection-tutorial-for-ios-getting-started#toc-anchor-003
 https://github.com/raywenderlich/swift-style-guide#constants
 
