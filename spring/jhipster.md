@@ -8,6 +8,13 @@ git commit -a
 git push --set-upstream origin jhipster_upgrade
 git checkout master
 ```
+# 2022-02-26 Jhipster Study
+```
+git clone https://github.com/jhipster/jhipster-lite
+git clone https://github.com/jhipster/generator-jhipster-native
+git clone https://github.com/mraible/spring-native-examples
+```
+----------------------------------------------------
 
 
 https://velog.io/@max9106/JHipster-JHipster-liquibase-wak17x0f0i  // Junseo Kim
@@ -15,6 +22,7 @@ git clone https://github.com/KJunseo/JHipster_custom_user_management
 https://velog.io/@max9106/Spring-Security-csrf
 https://github.com/KJunseo/JHipster-image-handling
 https://github.com/KJunseo/jhipster_board_test1
+```
 /*
 2019.06.17 ~ 2019.08.22 강의실 예약 시스템(한동대학교) 개발
 2019.10.19 교내에서 TOPCIT 시험 응시
@@ -26,7 +34,7 @@ https://github.com/KJunseo/jhipster_board_test1
 2020.01.14 ~
 2020.02.15 ~ 2020.02.16 스프링 러너 Mastering Spring Web 101 Workshop 참여
 */
-
+```
 https://www.appvillage.or.kr/
 건강가이드/cw89dkagh12#$!!
 전국 약국 정보 서비스
